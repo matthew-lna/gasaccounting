@@ -1,0 +1,9 @@
+INTRODUCTION
+Hello and welcome to another training video from the Mobiloan classroom.
+In this video we will be looking at the Mobiloan custom reports solution.
+Custom reports functionality forms part of the reporting module in Mobiloan. 
+It was developed with the intention of giving you, the user, absolute flexibility by allowing you to choose which models, fields and filters would generate the most meaningful and useful information for the continued management of your business.
+The custom reports solution is not meant to replace the standard reports that come preloaded in Mobiloan but rather to supplement them.
+Queries can be as simple as interrogating a single model using basic filter criteria to compiling complex queries and generating data sets using a combination of single or multiple filter criteria from directly related and possibly obscurely related models. 
+This might sound a little overwhelming, but we assure you that the user friendly and intuitive interface will make generating your own reports an absolute pleasure.
+So, let’s get started!

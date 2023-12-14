@@ -1,0 +1,58 @@
+/* LOADER IMAGE AND ANIMATION */
+
+.loader_container {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.la_one {
+    animation: img_pulse_one 3s infinite;
+}
+
+.la_two {
+    animation: img_pulse_two 8s infinite;
+}
+
+.la_three {
+    animation: img_pulse_three 10s infinite;
+}
+
+.la_four {
+    animation: img_pulse_four 6s infinite;
+}
+
+.la_five {
+    animation: img_pulse_five 5s infinite; 
+}
+
+@keyframes img_pulse_one {
+    from {fill: #808080;}
+    to {fill: #335484;}
+}
+
+@keyframes img_pulse_two {
+    from {fill: #C0C0C0;}
+    to {fill: #be6f7a;}
+}
+
+@keyframes img_pulse_three {
+    from {fill: #696969;}
+    to {fill: #16234d;}
+}
+
+@keyframes img_pulse_four {
+    from {fill: #A9A9A9;}
+    to {fill: #c42030;}
+}
+
+@keyframes img_pulse_five {
+    from {fill: #B8B8B8;}
+    to {fill: #ac3747;}
+}

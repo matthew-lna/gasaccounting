@@ -1,0 +1,9 @@
+SO DO WE BIN THE STANDARD REPORTS?
+At this point you are likely asking yourself, “If I can get the data I need using custom reports, why do I need the other standard reports Mobiloan has to offer?”
+Custom reports are not meant as a replacement for the standard accounting reports provided in the reporting module. 
+The standard reports are carefully constructed to meet the needs of your internal and external auditors, accountants, and business administrators. 
+Standard reports focus more on reporting using historical data at a specific date or for a period using strict criteria for use in financial statements and reports in line with accepted accounting practice as documented and required by various accounting reporting frameworks. 
+Custom reports are designed with the view of supplementing these reports to allow for greater insight into your business. These reports would likely be run with greater frequency and with the view of allowing business owners to make better decisions and react quicker to changes in circumstances, rather than having to wait till the “monthly management pack” is released, by which point it might well be too late.
+We envisage that the primary users of custom reports would be operations and branch managers as well as business owners looking to review business performance based on specific rather than generic criteria. 
+For example, an age analysis would give you the balance for a particular client at a particular date, this is useful for completing your balance sheet, however it might not tell you how many clients are grant recipients, who had a judgement and took a loan in January of a particular year and live in Durban and whose credit report had expired. Therein lies the power of custom reports.
+Now that we understand a little better what custom reports are for, let’s dive into generating our first query and getting our data.

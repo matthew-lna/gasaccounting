@@ -1,0 +1,6 @@
+PURPOSE OF CUSTOM REPORTS
+As a business owner time is money, and you are often only as good as your last good decision. This means that the accuracy, reliability, and relevance of your data is of critical importance to your business’ success.
+In Mobiloan data related to a business’ performance is stored in your instances database. 
+You need a reliable way to frequently access the data you need to allow you to make good business decisions.
+This is where custom reports come in.
+Custom reports allow you to dynamically create and store business performance queries which can be as simple or complex as your use case requires irrespective of how direct or obscure the relationship between the various data models might be. 

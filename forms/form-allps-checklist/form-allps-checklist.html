@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Model Query System</title>
+    <!-- REFERENCE TO THE JOURNEY-IFRAME-CLIENT, DO NOT DELETE-->
+    <script src="https://cdn.jsdelivr.net/npm/journey-iframe-client@0.2.0/dist/bundle.min.js"></script>
+    <!-- CSS -->
+    <style id="style_sheet" type="text/css">
+        body {font-family: Arial, Helvetica, sans-serif; font-size: 15px;}
+        .model-select {min-width: 250px;width: 100%; font-size: 15px;padding: 8px;margin: 8px 0px 8px 0px; border-radius: 2px;}
+        .table-option-div {min-width: 250px;width: 80%;  font-size: 16px;padding: 8px;}
+        .header {font-size: 24px;font-weight: bold;margin: 0px 0px 16px 0px;}
+        .sub-header {font-size: 20px;font-weight: bold;margin: 0px 0px 16px 0px; }
+        .section-title {font-weight: bold; font-size: 16px; padding: 8px 0px 8px 0px; }
+        .container {border: 1px solid #90A4AE;border-radius: 2px;padding: 8px;margin: 0px 0px 16px 0px; text-align: justify;}
+        ul {list-style-type: none; padding-inline-start: 16px;}
+        ul li {border: 1px solid #ccc;border-radius: 2px;margin: 4px 0px 4px 0px;padding: 4px;}
+        li a {color: #335483; font-weight: normal;}
+        .child {font-weight: normal; background-color: #ffffff;}
+        .list-header {font-weight: bold; background-color: #f5f5f5;}
+        .model-ul {margin: 0;padding: 0;}
+        .box {cursor: pointer;-webkit-user-select: none; /* Safari 3.1+ */-moz-user-select: none; /* Firefox 2+ */-ms-user-select: none; /* IE 10+ */user-select: none;}
+        .box::before {content: "\2610";color: #ccc;display: inline-block;margin-right: 6px;font-size: 16px;}
+        .expand {cursor: pointer;-webkit-user-select: none; /* Safari 3.1+ */-moz-user-select: none; /* Firefox 2+ */-ms-user-select: none; /* IE 10+ */user-select: none;}
+        .expand::before {content: "\002B";color: #335483;display: inline-block;margin-right: 6px;font-size: 16px;}
+        .collapse {cursor: pointer;-webkit-user-select: none; /* Safari 3.1+ */-moz-user-select: none; /* Firefox 2+ */-ms-user-select: none; /* IE 10+ */user-select: none;}
+        .collapse::before {content: "\2212";color: #335483;display: inline-block;margin-right: 6px;font-size: 16px;}
+        .checked::before {content: "\2611"; color: #335483;margin-right: 6px;font-size: 16px;}
+        .btn-container {text-align: right;}
+        .btn {display: inline-block; width: calc(50% - 54px); text-align: center; font-size: 16px; font-weight: bold; padding: 16px; border-radius: 2px; margin: 8px; cursor: pointer;}
+        .full {display: block; width: calc(100% - 35px); margin: 8px 0px 8px 0px;}
+        .negative {background-color: #ffffff; color: #335483; border: 1px solid #335483;}
+        .positive {background-color: #335483; color: #ffffff; border: 1px solid #335483;}
+        .remove {background-color: #FF4081; color: #ffffff;}
+        .filter-component {width: calc(100% - 20px); padding: 12px 12px; text-align: right;}
+        .filter {display: inline-block;width: calc(100% - 24px); border: 1px solid #111111; border-radius: 2px;padding: 8px; background-color: #f5f5f5;}
+        .conjunction {min-width: 70px;}
+        .models {min-width: 200px; width: calc(25% - 52px);}
+        .fields {min-width: 200px; width: calc(25% - 52px);}
+        .options {min-width: 200px; width: calc(25% - 52px);}
+        input {cursor: pointer;}
+        select {cursor: pointer;}
+        input.value {min-width: 200px; width: calc(25% - 72px);}
+        select.value {min-width: 200px; width: calc(25% - 52px);}
+        .filter-component-add {padding: 12px 12px;}
+        .filter select {cursor: pointer; display: inline-block;font-size: 15px;padding: 8px;margin: 8px 8px 8px 8px; border-radius: 2px;background-color: #ffffff;}
+        .filter input {border: 1px solid #808080; cursor: pointer; display: inline-block;font-size: 15px;padding: 8px;margin: 8px 8px 8px 8px; border-radius: 2px;background-color: #ffffff;}
+        .filter .remove-div {cursor: pointer; display: inline-block;font-size: 15px;padding: 8px;margin: 8px 0px 8px 0px; border-radius: 2px;}
+        .filter-add div {cursor: pointer;display: inline-block;font-size: 15px;padding: 0px 8px 0px 8px;border-radius: 2px;}
+        .filter-div {border: 1px solid #808080; margin-top: -2px;}  
+        .filter-div:nth-of-type(odd) {background: #F5F6F7;}
+        .filter-div:nth-of-type(even) {background: #ffffff;}
+        .span-lng-btn {cursor: pointer; padding: 8px 12px; border-radius: 2px;}
+        .span-btn {cursor: pointer; padding: 8px 12px; border-radius: 50%;}
+        @media only screen and (max-width: 1160px) {
+            .filter {display: block; width: calc(100% - 16px); text-align: center;}
+            .filter-add {display: block; width: calc(100% - 16px);}
+            .filter select {display: block;text-align: center;display: inline-block;width: calc(100% - 30px);}
+            .filter input {display: block;text-align: center; display: inline-block;width: calc(100% - 48px);}
+            .filter.remove-div {display: block;text-align: center;display: inline-block;width: calc(100% - 30px);}
+            .filter-add div {display: block;text-align: center;display: inline-block;width: calc(100% - 30px);}
+            .filter-component-add {text-align: center;}
+        }
+        .hidden {display: none;}
+        .active {display: block;}
+        input::-webkit-datetime-edit {font-family: Arial, Helvetica, sans-serif; font-size: 15px;}
+        .selection-block {display: inline-block;}
+    </style>
+</head>
+<body>
+    <!-- TABLE QUERY CONTAINER -->
+    <div>
+        <!-- TABLE , RELATED TABLE AND FIELDS SELECTION PAGE -->
+        <div id="mdl_rel_sel_pg">
+            <div class="sub-header">Step 1 of 2 : Model, related model and field selection</div>
+            <div class="container">
+                <div>Welcome to the Mobiloan data model query and selections system. Please read the instructions below carefully to ensure your queries are properly constructed.</div>
+                <div>
+                    <ol>
+                        <li>Start by selecting the primary data model you would like to query;</li>
+                        <li>Select the fields you would like to include in your query;</li>
+                        <li>To include related model fields simply click on the relevant checkbox; and</li>
+                        <li>Related models with no field selections will be ignored.</li>
+                    </ol>
+                </div>
+            </div>
+            <div id="mdl_sel_cont" class="container">
+                <div class="section-title">Data Model Selection</div>
+                <!-- SELECT WILL BE INSERTED HERE -->
+            </div>
+            <div id="qry_sel_cont" class="hidden container">
+                <div class="section-title">Data Model, Related Model(s) and Field Selection</div>
+                <div>
+                    <ul id="mdl_fld_tree" class="model-ul"></ul>
+                </div>
+            </div>
+        </div>
+        <!-- FILTER OPTIONS PAGE -->
+        <div id="fil_inp_pg" class="hidden">
+            <div class="sub-header">Step 2 of 2 : Filter selection</div>
+            <div class="container">
+                <div>
+                    <ol>
+                        <li>If you dont select any filters we will attempt to retrieve all data based on your model and field selections;</li>
+                        <li>Very big queries might result in server timeouts and query failures; and</li>
+                        <li>We recommend that you consider the purpose that you require the data for and tailor your query accordingly.</li>
+                    </ol>
+                </div>
+            </div>
+            <div id="mdl_fil_cont" class="container">
+                <div class="section-title">Filters</div>
+                <div class="filter-component">
+                    <div id="filter_container" class="filter">
+                    </div>
+                </div>
+                <div class="filter-component-add">
+                    <div class="filter-add">
+                        <div>
+                            <span id="filter_add" class="span-lng-btn positive">&plus; Add Filter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-container">
+            <div id="btn_prev" class="btn negative hidden">Previous</div>
+            <div id="btn_next" class="btn positive full">Next</div>
+            <div id="btn_submit" class="btn positive hidden">Build</div>
+        </div>
+    </div>
+
+    <!-- SCRIPT TAG -->
+    <script>
+
+        // JOURNEY CLIENT
+        var client = new JourneyIFrameClient();
+
+        // FIELD TYPES
+        var field_types = {
+            'attachment': {options: ['exists', 'does_not_exist']}, 
+            'boolean': {options: ['equals','not_equal_to', 'exists', 'does_not_exist']}, 
+            'date': {options: ['greater_than', 'greater_than_or_equal', 'equals', 'less_than_or_equal', 'less_than', 'exists', 'does_not_exist']}, 
+            'datetime': {options: ['greater_than', 'greater_than_or_equal', 'equals', 'less_than_or_equal', 'less_than', 'exists', 'does_not_exist']}, 
+            'integer': {options: ['greater_than', 'greater_than_or_equal', 'equals', 'less_than_or_equal', 'less_than','exists', 'does_not_exist']}, 
+            'location': {options: ['exists', 'does_not_exist']}, 
+            'multiple-choice': {options: ['equals','not_equal_to', 'contains', 'exists', 'does_not_exist']}, 
+            'multiple-choice-integer': {options: ['equals','not_equal_to', 'contains', 'exists', 'does_not_exist']}, 
+            'number': {options: ['greater_than', 'greater_than_or_equal', 'equals', 'less_than_or_equal', 'less_than','exists', 'does_not_exist']}, 
+            'photo': {options: ['exists', 'does_not_exist']}, 
+            'signature': {options: ['exists', 'does_not_exist']}, 
+            'single-choice': {options: ['equals','not_equal_to', 'exists', 'does_not_exist']}, 
+            'single-choice-integer': {options: ['equals','not_equal_to', 'exists', 'does_not_exist']}, 
+            'text': {options: ['equals','not_equal_to', 'contains', 'exists', 'does_not_exist']}
+        }
+
+        /* GLOBAL VARIABLES */
+        var arr_changed = false;
+        var qry_models = ['Select model'];
+        var mdls_sel = [];
+        var db_name = '';
+        var data;
+
+        /* ELEMENTS */
+        
+        /* Model and Related Selection Page */
+        var mdl_rel_sel_pg = document.getElementById('mdl_rel_sel_pg');
+        var mdl_sel_cont = document.getElementById('mdl_sel_cont');
+        var qry_sel_cont = document.getElementById('qry_sel_cont');
+        var mdl_fld_tree = document.getElementById('mdl_fld_tree');
+        
+        /* Filter Input Page */
+        var fil_inp_pg = document.getElementById('fil_inp_pg');
+        var filter_container = document.getElementById('filter_container');
+        var filter_add = document.getElementById('filter_add');
+        
+        /* Filter Add Event Listeners and Functions */
+        
+        filter_add.addEventListener('click', function () {
+
+            document.getElementById('empty_filters').classList.add('hidden');
+
+            var fil_div = document.createElement('div');
+            fil_div.classList.add('filter-div');
+            filter_container.append(fil_div);
+
+            // This is the template for creating a new filter
+            var fil_el_arr = [
+                {el: 'div', id: '', inhtml: null, options: null, classes: ['remove-div'], cont: [fil_div], disabled: false, old_el: null},
+                {el: 'span', id: '', inhtml: 'x', options: null, classes: ['span-btn', 'remove'], cont: [fil_div, '.remove-div'], disabled: false, old_el: null},
+                {el: 'select', id: '', inhtml: null, options: ['AND', 'OR'], classes: ['conjuction'], cont: [fil_div], disabled: false, old_el: null},
+                {el: 'select', id: '', inhtml: null, options: qry_models, classes: ['models'], cont: [fil_div], disabled: false, old_el: null},
+                {el: 'select', id: '', inhtml: null, options: ['Select field'], classes: ['fields'], cont: [fil_div], disabled: true, old_el: null},
+                {el: 'select', id: '', inhtml: null, options: ['Select option'], classes: ['options'], cont: [fil_div], disabled: true, old_el: null},
+                {el: 'input', id: '', inhtml: null, options: {placeholder: "Enter value here", type: 'text'}, classes: ['value'], cont: [fil_div], disabled: true, old_el: null},
+            ];
+
+            // Builds the filter elements for display to the user
+            for (var [index, n] of fil_el_arr.entries()) {
+                if (!filter_container.children[2] && index == 2) continue; // First filter item doesn't need conjunction for sql statement, so element is not required.
+                createElementAndContent(n.el, n.id, n.inhtml, n.options, n.classes, n.cont, n.disabled, n.old_el)
+            }
+
+            setRemoveEventListeners();
+
+        });
+        
+        function createElementAndContent (el, id, inhtml, options, classes, cont, disabled, old_el) {
+            var new_el = document.createElement(el);
+            if (id) new_el.id = id;
+            if (inhtml) new_el.innerHTML = inhtml;
+            if (classes) for (p of classes) new_el.classList.add(p);
+            if (el == 'select') createSelectOptions(options, new_el);
+            if (el == 'input') {
+                if (options.type) new_el.type = options.type;
+                if (options.placeholder) new_el.placeholder = options.placeholder;
+            }
+            if (disabled) new_el.setAttribute('disabled', true);
+            if (old_el) cont.length > 1 ? cont[0].querySelector(cont[1]).replaceChild(new_el, old_el) : cont[0].replaceChild(new_el, old_el);
+            else cont.length > 1 ? cont[0].querySelector(cont[1]).append(new_el) : cont[0].append(new_el);
+
+            var select_tags = filter_container.getElementsByTagName('select');
+            for (t of select_tags) {
+                if (t.classList.contains('value') || t.classList.contains('conjuction')) continue;
+                if (t.classList.contains('models')) {
+                    t.removeEventListener('click', setModelOptions);
+                    t.addEventListener('click', setModelOptions);
+                }
+                if (t.classList.contains('options')) {
+                    t.removeEventListener('change', onQueryOptionsChange);
+                    t.addEventListener('change', onQueryOptionsChange);
+                }
+                else {
+                    t.removeEventListener('click', onSelectClickChange);
+                    t.addEventListener('click', onSelectClickChange);
+                    t.removeEventListener('change', onSelectClickChange);
+                    t.addEventListener('change', onSelectClickChange);
+                }
+            }
+        }
+            
+        function createSelectOptions (arr, cont) {
+            for (var u of arr) {
+                var dsp, key;
+                if (typeof(u) == 'object') {
+                    dsp = u.display;
+                    key = u.key;
+                }
+                else {
+                    dsp = u;
+                    key = u;
+                }              
+                var new_opt = document.createElement('option');
+                new_opt.setAttribute('tag', key)
+                new_opt.innerHTML = removeUnderScoreAndCapitalise(dsp);
+                cont.append(new_opt);
+            }
+        }
+        
+        function setModelOptions (e) {
+            var fields = document.querySelectorAll('.checked');
+            for (var s of fields) {
+                if (e.target.classList.contains('models')) qry_models.includes(s.getAttribute('model')) ? '' : updateArray(qry_models, s.getAttribute('model'));
+            }
+            if (qry_models.length != e.target.options.length) {
+                if (e.target.tagName == 'SELECT') e.target.innerHTML = '';
+                createSelectOptions(qry_models, e.target);
+            }
+        }
+
+        function onSelectClickChange (e) {
+            var parent = e.target.parentNode;
+            var opt_arr, tgt_sel, data_obj;
+
+            if (e.target.classList.contains('models')) {
+                if (e.type == 'click') return;
+                data_obj = setFields(e, parent, opt_arr, tgt_sel);
+                opt_arr = data_obj.opt_arr;
+                tgt_sel = data_obj.tgt_sel;
+                tgt_sel.innerHTML = '';
+            }
+
+            if (e.target.classList.contains('fields')) {
+                if (e.type == 'click') {
+                    data_obj = setFields(e, parent, opt_arr, tgt_sel);
+                    opt_arr = data_obj.opt_arr;
+                    tgt_sel = data_obj.tgt_sel;
+                    var arr_chng
+                    var ex_opts = e.target.options;
+                    if (opt_arr.length != ex_opts.length) arr_chng = true;
+                    else {
+                        for (x of ex_opts) {
+                            if (opt_arr.includes(x.getAttribute('tag'))) continue;
+                            arr_chng = true;
+                        }
+                    }
+                    if (!arr_chng) return;
+                    tgt_sel.innerHTML = '';
+                }
+                else {
+                    opt_arr = ['Select option'];
+                    tgt_sel = parent.querySelector('.options');
+                    tgt_sel.innerHTML = '';
+                    if (e.target.selectedIndex != 0) {
+                        var mdl = parent.querySelector('.models')[parent.querySelector('.models').selectedIndex].getAttribute('tag');
+                        var fld = e.target[e.target.selectedIndex].getAttribute('tag');
+                        var fld_type = data.models[mdl].fields[fld].type;
+                        opt_arr = opt_arr.concat(field_types[fld_type].options);
+                    }
+                    createElementAndContent('input', null, null, {placeholder: '', type: 'text'}, ['value'], [parent], false, parent.querySelector('.value'));
+                    parent.querySelector('.value').setAttribute('disabled', true);
+                }
+            }
+            
+            createSelectOptions(opt_arr, tgt_sel);
+            
+            if (e.target.selectedIndex != 0) tgt_sel.removeAttribute('disabled');
+            else if (e.type != 'click') tgt_sel.setAttribute('disabled', true);
+        }
+
+        function setFields (e, parent, opt_arr, tgt_sel) {
+            opt_arr = ['Select field'];
+            tgt_sel = parent.querySelector('.fields');
+            // OPTION TO INCLUDE ONLY CHECKED FIELDS (Removed per Martin on 22/03/2023)
+            // var fields = document.querySelectorAll('.checked');
+            // REVISED OPTION TO INCLUDE ALL FIELDS RELATED TO MODEL
+            var fields = document.querySelectorAll('.child');   
+            for (var s of fields) {
+                if (e.target.classList.contains('models')) {
+                    if (s.getAttribute('model') != e.target[e.target.selectedIndex].getAttribute('tag')) continue;
+                    else opt_arr.includes(s.getAttribute('field')) ? '' : updateArray(opt_arr, s.getAttribute('field'));
+                }
+                if (e.target.classList.contains('fields')) {
+                    if (s.getAttribute('model') != parent.querySelector('.models')[parent.querySelector('.models').selectedIndex].getAttribute('tag')) continue;
+                    else opt_arr.includes(s.getAttribute('field')) ? '' : updateArray(opt_arr, s.getAttribute('field'));
+                }
+            }
+            return {opt_arr, tgt_sel};
+        }
+
+        function onQueryOptionsChange (e) {
+            var parent = e.target.parentNode;
+            var tgt_el = parent.querySelector('.value');
+            var fld_type;
+            if (e.target.selectedIndex != 0) {
+                var mdl = parent.querySelector('.models')[parent.querySelector('.models').selectedIndex].getAttribute('tag');
+                var fld = parent.querySelector('.fields')[parent.querySelector('.fields').selectedIndex].getAttribute('tag');
+                fld_type = data.models[mdl].fields[fld].type;
+
+                if (e.target[e.target.selectedIndex].getAttribute('tag') == 'exists' || e.target[e.target.selectedIndex].getAttribute('tag') == 'does_not_exist') {
+                    createElementAndContent('input', null, null, {placeholder: 'Not required', type: 'text'}, ['value'], [parent], true, tgt_el);
+                }
+                else if (/choice/.test(fld_type) || /boolean/.test(fld_type)) {
+                    var opt_arr = ['Select option'].concat(data.models[mdl].fields[fld].options.map(function (x) { return {key: x.key, display: x.display}}));
+                    createElementAndContent('select', null, null, opt_arr, ['value'], [parent], false, tgt_el);
+                } 
+                else {
+                    var inp_type, inp_placeholder, locked;
+                    switch (fld_type) {
+                        case 'datetime':
+                        case 'date':
+                            inp_type = 'date';
+                            inp_placeholder = 'Select date';
+                            locked = false;
+                            break;
+                        case 'integer':
+                        case 'number':
+                            inp_type = 'number';
+                            inp_placeholder = 'Input value';
+                            locked = false;
+                            break;
+                        case 'attachment':
+                        case 'location':
+                        case 'photo':
+                        case 'signature':
+                            inp_type = 'text';
+                            inp_placeholder = 'Not required';
+                            locked = true;
+                            break;
+                        default: 
+                            inp_type = 'text';
+                            inp_placeholder = 'Input search value';
+                            locked = false;
+                    }
+                    createElementAndContent('input', null, null, {placeholder: inp_placeholder, type: inp_type}, ['value'], [parent], locked, tgt_el);
+                }
+            }
+            
+            if (e.target.selectedIndex != 0) tgt_el.removeAttribute('disabled');
+            else tgt_el.setAttribute('disabled', true);
+        }
+
+        function setRemoveEventListeners () {
+            var rmv_el = document.querySelectorAll('.remove');
+            for (var q of rmv_el) {
+                q.removeEventListener('click', removeFilter);
+                q.addEventListener('click', removeFilter);
+            }
+        }
+        
+        function removeFilter (e) {
+            // Remove filter option
+            if (e.target.parentNode.classList.contains('filter-div')) e.target.parentNode.remove();
+            else if (e.target.parentNode.parentNode.classList.contains('filter-div')) e.target.parentNode.parentNode.remove();
+            // If there are no filters show no filters selected text box
+            if (filter_container.childNodes.length < 2) empty_filters.classList.toggle('hidden');
+        }
+
+        /* Navigation Buttons */ 
+        var btn_prev = document.getElementById('btn_prev');
+        var btn_next = document.getElementById('btn_next');
+        var btn_submit = document.getElementById('btn_submit');
+        
+        /* Page Navigation Event Listeners and Functions */
+
+        btn_prev.addEventListener('click', function () {validateInputs('btn_prev')});
+        btn_next.addEventListener('click', function () {validateInputs('btn_next')});
+        btn_submit.addEventListener('click', function () {validateInputs('submit')});
+        
+        function buttonNavigation () {
+            var tgl_elms = [btn_prev, btn_next, btn_submit, mdl_rel_sel_pg, fil_inp_pg];
+            for (var m of tgl_elms) {m.classList.toggle('hidden');}
+        }
+        
+        function validateInputs (nav_btn) {
+            switch (nav_btn) {
+                case 'btn_next': 
+                    var mdl_sel = document.querySelector('.model-select');
+                    if (mdl_sel.selectedIndex == 0) return client.post('error', 'Nope, you haven\'t selected a model you can\'t continue!');
+                    var chkd_bxs = document.querySelectorAll('.checked');
+                    if (!chkd_bxs.length) return client.post('error', 'Nope, you haven\'t selected any fields you can\'t continue!');
+                    buttonNavigation();
+                    break;
+                case 'btn_prev':
+                    var fltrs = 1;
+                    while (filter_container.children.length > 1) {
+                        filter_container.children[fltrs].remove();
+                    }
+                    empty_filters.classList.remove('hidden');
+                    buttonNavigation();
+                    break;
+                case 'submit':
+                    return sqlQueryValidation();
+            }
+        }
+
+        /* SQL QUERY FUNCTIONS */
+            
+        function sqlQueryValidation () {
+            var mdl_fltrs = filter_container.getElementsByClassName('models');
+            var fld_fltrs = filter_container.getElementsByClassName('fields');
+            var opts_fltrs = filter_container.getElementsByClassName('options');
+            var val_fltrs = filter_container.getElementsByClassName('value');
+
+            var tst_arrs = [mdl_fltrs, fld_fltrs, opts_fltrs, val_fltrs]
+
+            var fltr_val_passed = true;
+
+            for (var c of tst_arrs) {
+                for (var d of c) {
+                    if (d.tagName == 'SELECT') {
+                        if (d.selectedIndex == 0) fltr_val_passed = false;
+                    }
+                    if (d.tagName == 'INPUT') {
+                        if (!d.value) {
+                            var opts = d.parentNode.querySelector('.options');
+                            if (opts[opts.selectedIndex].getAttribute('tag') == 'exists') continue;
+                            if (opts[opts.selectedIndex].getAttribute('tag') == 'does_not_exist') continue;
+                            fltr_val_passed = false;
+                        }
+                    }
+                }
+            }
+
+            if (!fltr_val_passed) client.post('error', 'SQL query cant be generated due to incomplete filters');
+            else generateSqlQuery();
+        }
+
+        function generateSqlQuery () {
+            // ELEMENT THAT CONTAINS PRIMARY MODEL SELECTION
+            var pr_sel = document.getElementsByClassName('model-select')[0];
+            // VALUE OF PRIMARY MODEL SELECTION
+            var pr_mdl = pr_sel[pr_sel.selectedIndex].id;
+            // ALL THE FIELDS THAT ARE CHECKED (ATTRIBUTES FIELD, MODEL, CLASS)
+            var fields = document.getElementsByClassName('checked');
+            // ALL THE FILTERS PER STEP 2
+            var fltrs = document.getElementsByClassName('filter-div');
+            // UNIQUE MODELS
+            var unique_mdls = [];
+            // QUERY TREE
+            var query_tree = {};
+            query_tree[pr_mdl] = {fields:[], filters:[]};
+            // ADD OTHER MODELS TO PRIMARY MODEL
+            for (var e of fields) {
+                // MAKE SURE MODELS ARE NOT DUPLICATED IN THE QUERY TREE
+                if (unique_mdls.includes(e.getAttribute('model'))) continue;
+                // FOR THE PRIMARY MODEL ADD THE FIELDS TO THE FIELDS PROPERTY 
+                if (e.getAttribute('model') == pr_mdl) {
+                    // MAKE SURE MODEL IS NOT DUPLICATED
+                    if (query_tree[pr_mdl].fields.includes(e.getAttribute('field'))) continue;
+                    // ADD FIELD TO FIELDS PROPERTY IN QUERY TREE
+                    query_tree[pr_mdl].fields.push(e.getAttribute('field'));
+                }
+                // ADD MODEL TO UNIQUE MODELS
+                else unique_mdls.push(e.getAttribute('model'));
+            }
+            for (var f of unique_mdls) {
+                // SETS UP RELATED MODEL OBJECT WITH PROPERTIES 
+                query_tree[pr_mdl][f] = {ky: '', fields:[], belongs_to: ''};
+                // SETS VALUE FOR BELONGS TO PROPERTY
+                query_tree[pr_mdl][f].belongs_to = Array.prototype.filter.call(mdl_fld_tree.querySelectorAll('.list-header'), function (x) {return x.getAttribute('field') == f})[0].getAttribute('model');
+                // LOOP THROUGH FIELDS AND ALLOCATE TO CURRENT MODEL IF APPROPRIATE
+                for (var g of fields) {
+                    // ONLY USE FIELDS LINKED TO THE CURRENT MODEL
+                    if (g.getAttribute('model') != f) continue;
+                    // MAKE SURE FIELD IS NOT DUPLICATED
+                    if (query_tree[pr_mdl][f].fields.includes(g.getAttribute('field'))) continue;
+                    // ADD FIELD TO MODEL
+                    query_tree[pr_mdl][f].fields.push(g.getAttribute('field'));
+                    // SET UNIQUE KEY
+                    if (g.getAttribute('unique_ky')) query_tree[pr_mdl][f].ky = g.getAttribute('unique_ky');
+                    else query_tree[pr_mdl][f].ky = g.getAttribute('model');
+                }
+            }
+            for (var h of fltrs) {
+                var fltr_con = h.querySelector('.conjuction') ? getFilterTagValue('SELECT', h.querySelector('.conjuction')) : null;
+                var fltr_mdl = getFilterTagValue('SELECT', h.querySelector('.models'));
+                var fltr_mdl_fld = getFilterTagValue('SELECT', h.querySelector('.fields')); 
+                var fltr_mdl_fld_opt = getFilterTagValue('SELECT', h.querySelector('.options'));
+                var fltr_mdl_fld_opt_val = getFilterTagValue(h.querySelector('.value').tagName, h.querySelector('.value'));
+                query_tree[pr_mdl].filters.push({mdl: fltr_mdl, fld: fltr_mdl_fld, opt: fltr_mdl_fld_opt, val: fltr_mdl_fld_opt_val, conj: fltr_con});
+            }
+            var qry_str = 'SELECT';
+            var joins = '';
+            var rel_mdls = []; 
+            var join_mdls = [];
+            // COLUMN CUSTOM FORMATTING
+            function formatColumn(column_str){
+                //ADD LABEL BEFORE MODIFICATIONS
+                var label = removeUnderScoreAndCapitalise(column_str.split('.')[1]);
+                //ADD DATE FORMAT FOR DATES
+                if (/date_|_date/.test(column_str)) column_str = `DATE_FORMAT(${column_str},'%Y-%m-%d')`;
+                //ADD PHONE FORMAT 
+                if (/phone/.test(column_str)) column_str = `CONCAT('0', SUBSTR(${column_str}, -9))`
+                //ADD COLUMN LABEL
+                return ` ${column_str} AS '${label}', `;
+            }
+            var remove_trailing_comma_regex = /,(\s*)$/;
+
+            // FIND ALL LI TAGS IN THE QUERY SELECT CONTAINER
+            var doc_lis = qry_sel_cont.getElementsByTagName('li');
+            var lis_review = [];
+            // LOOP THROUGH QUERY TREE TO INSERT FIELDS
+            for (var aa of Object.keys(query_tree[pr_mdl])) {
+                // FILTERS ARE WHERE CONDITIONS 
+                if (aa == 'filters') continue;
+                if (aa == 'fields') {
+                    // FIELDS FROM PRIMARY MODEL TO BE INSERTED INTO QUERY
+                    for (ab of query_tree[pr_mdl][aa]) qry_str += formatColumn(`${pr_mdl}.${ab}`);
+                }
+                else {
+                    // COVERS ALL OTHER FIELDS FROM RELATED MODELS
+                    for (ac of query_tree[pr_mdl][aa].fields) {
+                        // ADD OTHER FIELDS FOR OTHER MODELS
+                        qry_str += formatColumn(`${aa}.${ac}`);
+                    }
+                }
+            }
+            //REMOVE COMMA
+                qry_str = qry_str.replace(remove_trailing_comma_regex, '');
+            // ESTABLISH LEFT JOINS
+            var i = 0;
+            while (doc_lis[i] != fields[fields.length-1]) {
+                if (doc_lis[i].classList.contains('list-header') || doc_lis[i].parentNode.classList.contains('hidden')) {
+                    i++;
+                    continue;
+                }
+                lis_review.push(doc_lis[i]);
+                i++;
+            }
+            lis_review.push(doc_lis[i]);
+            for (var ad of lis_review) {
+                if (!ad.getAttribute('model')) continue;
+                if (ad.getAttribute('model') == pr_mdl) continue;
+                if (rel_mdls.includes(ad.getAttribute('unique_ky'))) continue;
+                rel_mdls.push(ad.getAttribute('unique_ky'));
+            }
+            for (var ae of rel_mdls) {
+                var elem = lis_review.filter(function (x) { return (x.getAttribute('unique_ky') == ae) })[0];
+                join_mdls.push({
+                    ky: elem.getAttribute('unique_ky'), 
+                    mdl: elem.getAttribute('model'),
+                    belongs: elem.getAttribute('belongs')
+                });
+            }
+            for (var af of join_mdls) {
+                joins += ` LEFT JOIN ${af.mdl} ON ${af.belongs}.${af.ky}_id = ${af.mdl}.id`;
+            }
+            // ADD FROM
+            qry_str += ` FROM ${db_name}.${pr_mdl} ${pr_mdl}`
+            // ADD JOINS
+            qry_str += joins
+            // ADD WHERES
+            if (query_tree[pr_mdl].filters.length) {
+                qry_str += ` WHERE`
+                for (ad of query_tree[pr_mdl].filters) {
+                    var operators = {
+                        'exists':'IS NOT NULL',
+                        'does_not_exist':'IS NULL',
+                        'equals':'=',
+                        'not_equal_to':'<>',
+                        'greater_than':'>',
+                        'greater_than_or_equal':'>=',
+                        'less_than_or_equal':'<=',
+                        'less_than':'<',
+                        'contains':'LIKE',
+                        'and': 'AND',
+                        'or': 'OR'
+                    }
+                    var flt_str = (ad.conj) ? ` ${ad.conj} ` : ``;
+                    if (ad.opt.toLowerCase().split(' ').join('_') == 'exists' || ad.opt.toLowerCase().split(' ').join('_') == 'does_not_exist') {
+                        /*
+                            Note for the reviewer:
+                            1. A number of fields in the MySQL DB are blank but they are not NULL they are instead empty strings i.e. ''
+                            2. The below caters for this when a user is searching for a field that either exists or does not exist.
+                        */
+                        flt_str +=` ${ad.mdl.toLowerCase().split(' ').join('_')}.${ad.fld.toLowerCase().split(' ').join('_')} ${operators[ad.opt.toLowerCase().split(' ').join('_')]}`;
+                        if (ad.opt.toLowerCase().split(' ').join('_') == 'exists' && !ad.fld.toLowerCase().split(' ').join('_').includes('date')) flt_str += ` AND ${ad.mdl.toLowerCase().split(' ').join('_')}.${ad.fld.toLowerCase().split(' ').join('_')} <> ('')`;
+                        if (ad.opt.toLowerCase().split(' ').join('_') == 'does_not_exist' && !ad.fld.toLowerCase().split(' ').join('_').includes('date')) flt_str += ` OR ${ad.mdl.toLowerCase().split(' ').join('_')}.${ad.fld.toLowerCase().split(' ').join('_')} IN ('')`;
+                        qry_str += flt_str;
+                    }
+                    else {
+                        var int_txt = isNaN(ad.val) ? ad.val : Number(ad.val);
+                        var operator = operators[ad.opt.toLowerCase().split(' ').join('_')]
+                        flt_str += ` ${ad.mdl.toLowerCase().split(' ').join('_')}.${ad.fld.toLowerCase().split(' ').join('_')}` + ((operator=='LIKE') ? ` ${operator} '%${int_txt}%'` : ` ${operator} '${int_txt}'`);
+                        qry_str += flt_str;
+                    }                        
+                }
+            }
+            
+            client.post('qry_string', {query_string: qry_str, query_tree: query_tree});
+        }
+
+        function getFilterTagValue (type, el) {
+            if (type == 'SELECT') return el[el.selectedIndex].innerHTML;
+            if (type == 'INPUT') return el.value
+        }
+
+        /* Excluded Models */
+        var excluded_models = ['allps','billing','broadcast','config','email','data_export','log','login_audit_log','notification','batch_sms','session','sql_query','sql_result','sql_csv','table','temp'];
+
+        /* Generic Helper Functions */
+
+        function removeUnderScoreAndCapitalise (txt) {
+            return txt.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+/g).join(' ')[0].toUpperCase() + txt.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+/g).join(' ').substr(1);
+        }
+
+        function tickUntickBox () {
+            this.classList.toggle("box");
+            this.classList.toggle("checked");
+        }
+        
+        function updateArray (arr, val) {
+            arr.push(val)
+        }
+        
+        /* DATA MODEL QUERY SYSTEM : STEP 1 of 2 - Model, related model and field selection */
+
+        /* PRIMARY SELECTION OF MAIN MODEL */
+
+        // WAIT FOR HTML TO LOAD
+        document.addEventListener('DOMContentLoaded', function () {
+            client.post('load');
+        });
+
+        client.on('datamodel', function (obj) {
+
+            data = obj.datamodel;
+            db_name = obj.db_name;
+            
+            /* STEP 1 : Create the model select element and append to the DOM */
+            var select = document.createElement('select');
+            select.classList.add('model-select');
+            mdl_sel_cont.append(select);
+            
+            /* STEP 2 : Create the select element model options including default option */
+            var def_opt = document.createElement('option');
+            def_opt.id = 'default_option';
+            def_opt.innerHTML = 'Select data model table';
+            select.append(def_opt);
+            for (var model of Object.keys(data.models).sort()) {
+                if (excluded_models.includes(model)) continue;
+                var option_text = removeUnderScoreAndCapitalise(model);
+                var model_option = document.createElement('option');
+                model_option.id = model;
+                model_option.innerHTML = option_text;
+                select.append(model_option);
+            }
+            
+            if (obj.query) {
+                /* SETUP PRECONFIGURED SAVED QUERY */
+                
+                /* STEP 1 : Select Primary Model */
+                var saved_qry_model = Object.keys(obj.query)[0];
+                select.selectedIndex = Array.prototype.filter.call(select.options, function (option) { return option.id == Object.keys(obj.query)[0]})[0].index;
+                setSelectChanges();
+                
+                /* STEP 2 : Select Primary Model fields */
+                var pr_mdl_list = mdl_fld_tree.getElementsByClassName('list-header')[0];
+                pr_mdl_list.click();
+                var pr_mdl_chldn = pr_mdl_list.getElementsByClassName('child');
+                var saved_qry_details = obj.query[saved_qry_model];
+                if (saved_qry_details.fields.length) {
+                    for (var fld of saved_qry_details.fields) {
+                        for (var li_itm of pr_mdl_chldn) {
+                            if (li_itm.getAttribute('field') == fld && li_itm.getAttribute('model') == saved_qry_model) li_itm.click();
+                        }
+                    }
+                }
+
+                /* STEP 3 : Select Other Models Based on Relationship*/
+                var oth_li_hd = document.getElementsByClassName('list-header');
+                for (var oth_li of oth_li_hd) {
+                    if (oth_li.classList.contains('collapse')) continue; 
+                    oth_li.click();
+                }          
+                
+                var mdl_kys = Object.keys(saved_qry_details);
+                for (var rmv of ['fields','filters']) mdl_kys.splice(mdl_kys.indexOf(rmv),1);
+                
+                var chldrn = mdl_fld_tree.getElementsByClassName('child')
+                for (mdl_ky of mdl_kys) {
+                    var ky_flds = saved_qry_details[mdl_ky].fields;
+                    for (var ky_fld of ky_flds) {
+                        for (chld of chldrn) {
+                            if (chld.getAttribute('unique_ky') == saved_qry_details[mdl_ky].ky && chld.getAttribute('field') == ky_fld && chld.getAttribute('belongs') == saved_qry_details[mdl_ky].belongs_to) chld.click();
+                        }
+                    }
+                }
+                
+                /* STEP 4 : Roll up empty lists */
+                var empt_li_hd = document.getElementsByClassName('list-header');
+                for (var empt_li of empt_li_hd) {
+                    if (empt_li.querySelectorAll('.checked').length) continue; 
+                    empt_li.click();
+                }
+                
+                /* STEP 5 : Navigate to the next view */
+                btn_next.click();
+                
+                /* STEP 6 : Add number of filters */
+                var qry_fltrs = saved_qry_details.filters;
+                for (var fltr_itm of qry_fltrs) filter_add.click();
+                
+                /* STEP 7 : Set filters values */
+                var fltr_divs = filter_container.getElementsByClassName('filter-div');
+                for ([index, fltr_div] of Array.prototype.entries.call(fltr_divs)) {
+                    // Set Conjuction
+                    var fltr_conj = fltr_div.querySelector('.conjuction');
+                    if (fltr_conj) fltr_conj.selectedIndex = Array.prototype.filter.call(fltr_conj.options, function (cnj) { return cnj.getAttribute('tag') == qry_fltrs[index].conj})[0].index;
+                    
+                    // Set Model
+                    var fltr_mdl = fltr_div.querySelector('.models');
+                    fltr_mdl.click();
+                    fltr_mdl.selectedIndex = Array.prototype.filter.call(fltr_mdl.options, function (md) { return md.getAttribute('tag') == qry_fltrs[index].mdl.toLowerCase().split(' ').join('_')})[0].index;
+                    
+                    // Set Fields
+                    var fltr_fld = fltr_div.querySelector('.fields');
+                    fltr_fld.removeAttribute('disabled');
+                    fltr_fld.click();
+                    fltr_fld.selectedIndex = Array.prototype.filter.call(fltr_fld.options, function (fd) { return fd.getAttribute('tag') == qry_fltrs[index].fld.toLowerCase().split(' ').join('_')})[0].index;
+                    
+                    var mdl = fltr_mdl[fltr_mdl.selectedIndex].getAttribute('tag');
+                    var fld = fltr_fld[fltr_fld.selectedIndex].getAttribute('tag');
+                    var fld_type = data.models[mdl].fields[fld].type;
+                    
+                    // Set Options
+                    var fltr_opt = fltr_div.querySelector('.options');
+                    fltr_opt.removeAttribute('disabled');
+                    fltr_opt.innerHTML = '';
+                    var opt_arr = ['Select option'];
+                    
+                    var opt_arr = opt_arr.concat(field_types[fld_type].options);
+                    createSelectOptions(opt_arr, fltr_opt);
+                    
+                    fltr_opt.selectedIndex = Array.prototype.filter.call(fltr_opt.options, function (fo) { return fo.getAttribute('tag') == qry_fltrs[index].opt.toLowerCase().split(' ').join('_')})[0].index;
+                    
+                    // Set Value
+                    var fltr_val = fltr_div.querySelector('.value');
+
+                    if (fltr_opt[fltr_opt.selectedIndex].getAttribute('tag') == 'exists' || fltr_opt[fltr_opt.selectedIndex].getAttribute('tag') == 'does_not_exist') {
+                        createElementAndContent('input', null, null, {placeholder: 'Not required', type: 'text'}, ['value'], [fltr_div], true, fltr_val);
+                    }
+                    else if (/choice/.test(fld_type) || /boolean/.test(fld_type)) {
+                        var opt_arr = ['Select option'].concat(data.models[mdl].fields[fld].options.map(function (x) { return {key: x.key, display: x.display}}));
+                        createElementAndContent('select', null, null, opt_arr, ['value'], [fltr_div], false, fltr_val);
+                    } 
+                    else {
+                        var inp_type, inp_placeholder, locked;
+                        switch (fld_type) {
+                            case 'datetime':
+                            case 'date':
+                                inp_type = 'date';
+                                inp_placeholder = 'Select date';
+                                locked = false;
+                                break;
+                            case 'integer':
+                            case 'number':
+                                inp_type = 'number';
+                                inp_placeholder = 'Input value';
+                                locked = false;
+                                break;
+                            case 'attachment':
+                            case 'location':
+                            case 'photo':
+                            case 'signature':
+                                inp_type = 'text';
+                                inp_placeholder = 'Not required';
+                                locked = true;
+                                break;
+                            default: 
+                                inp_type = 'text';
+                                inp_placeholder = 'Input search value';
+                                locked = false;
+                        }
+                        createElementAndContent('input', null, null, {placeholder: inp_placeholder, type: inp_type}, ['value'], [fltr_div], locked, fltr_val);
+                    }
+                    
+                    fltr_val = fltr_div.querySelector('.value');
+                    
+                    if (fltr_val.tagName == "SELECT") fltr_val.selectedIndex = Array.prototype.filter.call(fltr_val.options, function (fv) { return fv.innerHTML == qry_fltrs[index].val})[0].index;
+                    if (fltr_val.tagName == "INPUT") if (qry_fltrs[index].val) fltr_val.value = qry_fltrs[index].val;
+                 
+                }   
+                
+            }
+            
+            select.addEventListener('change', function () {
+                setSelectChanges();
+            });
+            
+            function setSelectChanges () {
+                // Clear previous selections
+                clearPreviousSelections();
+                // Create primary unordered list
+                var mdl = select[select.selectedIndex].id;
+                if (select.selectedIndex) generateModelUnorderedList(mdl_fld_tree, mdl, data.models[mdl].fields, data.models[mdl].belongs_to, true, null);
+                // Unhide query selection container
+                if (!select.selectedIndex && !qry_sel_cont.classList.contains('hidden')) qry_sel_cont.classList.add('hidden');
+                else qry_sel_cont.classList.remove('hidden');
+                // Remove existing filters
+                filter_container.innerHTML = '';
+                createElementAndContent('div', 'empty_filters', 'There are currently no filters added.', null, null, [filter_container], false, null);
+                // Clear models array
+                qry_models = ['Select model'];
+                // Add model to selected models
+                mdls_sel.push(mdl);
+            }
+            
+            function generateModelUnorderedList (list, model, fields, related, bool, belongs) {
+                
+                if (bool) {
+                    // Creates the primary list entry
+                    var li = document.createElement('li');
+                    li.classList.add('list-header','expand');
+                    li.innerHTML = removeUnderScoreAndCapitalise(model);
+                    li.innerHTML += `<div class="selection-block">
+                            <span class="select-all">&nbsp;&nbsp;[&nbsp;Select All</span>
+                            <span>&nbsp;|&nbsp;</span>
+                            <span class="unselect-all">Unselect All&nbsp;]&nbsp;&nbsp;</span>
+                        </div>`;
+                    list.append(li);
+                }
+                
+                // Create nested unordered list for list fields and related models
+                var li_ul = document.createElement('ul');
+                bool ? li_ul.classList.add('hidden') : li_ul.classList.add('active');
+                bool ? li.append(li_ul) : list.append(li_ul);
+
+                // Create fields for primary list
+                for (var i of Object.keys(fields)) {
+                    // Skip json || pin || password fields because they are not stored in postgres
+                    if (/json/gi.test(i) || /pin/gi.test(i) || /password/gi.test(i)) continue;
+                    var ul_li = document.createElement('li');
+                    if (li_ul.parentNode.getAttribute('unique_ky')) ul_li.setAttribute('unique_ky', li_ul.parentNode.getAttribute('unique_ky'));
+                    ul_li.setAttribute('field', i);
+                    ul_li.setAttribute('model', model);
+                    belongs ? ul_li.setAttribute('belongs', belongs) : '';
+                    ul_li.classList.add('child','box');
+                    ul_li.innerHTML = fields[i].label;
+                    li_ul.append(ul_li);
+                }
+
+                // Create related models list entry
+                var rel_li = document.createElement('li');
+                rel_li.innerHTML = 'Related tables';
+                rel_li.classList.add('list-header','expand', 'related');
+                li_ul.append(rel_li);
+
+                // Create unordered list for related models
+                var rel_ul = document.createElement('ul');
+                rel_ul.classList.add('hidden');
+                rel_li.append(rel_ul);
+
+                // Create list of related models
+                for (var j of Object.keys(related)) {
+                    if (mdls_sel.includes(related[j].model)) continue;
+                    var rel_mod = document.createElement('li');
+                    rel_mod.setAttribute('unique_ky', j);
+                    rel_mod.setAttribute('field', related[j].model);
+                    rel_mod.setAttribute('model', model);
+                    rel_mod.classList.add('list-header','expand');
+                    rel_mod.innerHTML = removeUnderScoreAndCapitalise(j);
+                    rel_mod.innerHTML += `<div class="selection-block">
+                            <span class="select-all">&nbsp;&nbsp;[&nbsp;Select All</span>
+                            <span>&nbsp;|&nbsp;</span>
+                            <span class="unselect-all">Unselect All&nbsp;]&nbsp;&nbsp;</span>
+                        </div>`;
+                    rel_ul.append(rel_mod);
+                    mdls_sel.push(related[j].model)
+                }
+
+                setEventListeners();
+            }
+
+            function setEventListeners () {
+                var expands = mdl_fld_tree.getElementsByClassName('list-header');
+                for (var k of expands) {
+                    k.removeEventListener('click', expandCollapseTree);
+                    k.addEventListener('click', expandCollapseTree);
+                }
+                var boxes = mdl_fld_tree.getElementsByClassName('box');
+                for (var l of boxes) {
+                    l.removeEventListener('click', tickUntickBox);
+                    l.addEventListener('click', tickUntickBox);   
+                }
+
+                var select_alls = mdl_fld_tree.getElementsByClassName('select-all');
+                for (var m of select_alls) {
+                    m.removeEventListener('click', selectAll);
+                    m.addEventListener('click', selectAll);
+                }
+
+                var unselect_alls = mdl_fld_tree.getElementsByClassName('unselect-all');
+                for (var n of unselect_alls) {
+                    n.removeEventListener('click', selectNone);
+                    n.addEventListener('click', selectNone);
+                }
+
+            }
+
+            function expandCollapseTree (e) {
+                if (e.target != this) return;
+                this.classList.toggle("expand");
+                this.classList.toggle("collapse");
+                if (e.target.classList.contains('related')) {
+                    this.children[0].classList.toggle("hidden");
+                    this.children[0].classList.toggle("active");
+                    return;
+                }
+                if (!this.children[1]) {
+                    return generateModelUnorderedList(e.target, e.target.getAttribute('field'), data.models[e.target.getAttribute('field')].fields, data.models[e.target.getAttribute('field')].belongs_to, false, e.target.getAttribute('model'))
+                }
+                else {
+                    this.children[1].classList.toggle("hidden");
+                    this.children[1].classList.toggle("active");
+                }
+            }
+
+            function selectAll (e) {
+                var chld_arr = e.target.parentNode.parentNode.querySelectorAll('li');
+                var o = 0;
+                while (!chld_arr[o].classList.contains('related')) {
+                    if (!chld_arr[o].classList.contains('checked') && !chld_arr[o].classList.contains('list-header')) chld_arr[o].click();
+                    o++;
+                }
+            }  
+
+            function selectNone (e) {
+                var chld_arr = e.target.parentNode.parentNode.querySelectorAll('li');
+                var p = 0;
+                while (!chld_arr[p].classList.contains('related')) {
+                    if (chld_arr[p].classList.contains('checked') && !chld_arr[p].classList.contains('list-header')) chld_arr[p].click();
+                    p++;
+                }
+            }
+
+            function clearPreviousSelections () {
+                // Empty the selected models
+                mdls_sel = [];
+                // Clear the current field tree
+                mdl_fld_tree.innerHTML = '';
+            }
+            
+        });
+
+    </script>
+</body>
+
+</html>

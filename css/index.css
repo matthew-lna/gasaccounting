@@ -1,0 +1,296 @@
+/* BODY */
+
+@font-face {
+    font-family: 'Fira Sans';
+    src: url('../fonts/FiraSans-Regular.woff2') format('woff2'),
+        url('../fonts/FiraSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: "Fira Sans", Arial;
+    position: fixed;
+    top: 0;
+    font-size: 20px;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* APP CONTAINER */
+.app-container {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container-image {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* FLOATING ACTION BUTTON */
+
+@-webkit-keyframes come-in {
+    0% {
+        -webkit-transform: translatey(100px);
+        transform: translatey(100px);
+        opacity: 0;
+    }
+    30% {
+        -webkit-transform: translateX(-50px) scale(0.4);
+        transform: translateX(-50px) scale(0.4);
+    }
+    70% {
+        -webkit-transform: translateX(0px) scale(1.2);
+        transform: translateX(0px) scale(1.2);
+    }
+    100% {
+        -webkit-transform: translatey(0px) scale(1);
+        transform: translatey(0px) scale(1);
+        opacity: 1;
+    }
+}
+@keyframes come-in {
+    0% {
+        -webkit-transform: translatey(100px);
+        transform: translatey(100px);
+        opacity: 0;
+    }
+    30% {
+        -webkit-transform: translateX(-50px) scale(0.4);
+        transform: translateX(-50px) scale(0.4);
+    }
+    70% {
+        -webkit-transform: translateX(0px) scale(1.2);
+        transform: translateX(0px) scale(1.2);
+    }
+    100% {
+        -webkit-transform: translatey(0px) scale(1);
+        transform: translatey(0px) scale(1);
+        opacity: 1;
+    }
+}
+
+.floating-container {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    bottom: 0;
+    right: 0;
+    margin: 35px 25px;
+}
+
+.floating-container:hover {
+    height: 300px;
+}
+
+.floating-container:hover .floating-button {
+    -webkit-transform: translatey(5px);
+    transform: translatey(5px);
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.floating-container:hover .element-container .float-element:nth-child(1) {
+    -webkit-animation: come-in 0.4s forwards 0.2s;
+    animation: come-in 0.4s forwards 0.2s;
+}
+
+.floating-container:hover .element-container .float-element:nth-child(2) {
+    -webkit-animation: come-in 0.4s forwards 0.4s;
+    animation: come-in 0.4s forwards 0.4s;
+}
+
+.floating-container:hover .element-container .float-element:nth-child(3) {
+    -webkit-animation: come-in 0.4s forwards 0.6s;
+    animation: come-in 0.4s forwards 0.6s;
+}
+
+.floating-container .floating-button {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    background: #2cb3f0;
+    bottom: 0;
+    border-radius: 50%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    line-height: 65px;
+    text-align: center;
+    font-size: 23px;
+    z-index: 100;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.floating-container .float-element {
+    position: relative;
+    display: block;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 15px auto;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    line-height: 50px;
+    z-index: 0;
+    opacity: 0;
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+}
+
+.element-container .float-element {
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.element-container .float-element:nth-child(1) {
+    background: #42A5F5;
+}
+
+.element-container .float-element:nth-child(2) {
+    background: #4CAF50;
+}
+
+.element-container .float-element:nth-child(3) {
+    background: #FF9800;
+}
+
+.primary-menu-icon {
+    padding: 12px 0 0;
+    width: 40px;
+    height: auto;
+}
+
+.sub-menu-icon {
+    padding: 8px 0 0;
+    width: 32px;
+    height: auto;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+}
+
+/* NOTIFICATION */
+
+
+/* TOAST */
+
+
+/* WEB-APP */
+
+/* ACCORDION */
+
+.accordion {
+    background-image: linear-gradient(to right, #335484 , #ffffff);
+    color: #ffffff;
+    cursor: pointer;
+    padding: 18px;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+    border: 2px solid #335484;
+}
+
+.accordion:hover {
+    background-image: linear-gradient(to right, #ffffff , #335484);
+    color: #335484;
+}
+
+.accordion:after {
+    content: '\25BC';
+    color: #335484;
+    font-size: 18px;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion:hover:after {
+    content: '\25BC';
+    color: #ffffff;
+}
+
+.accordion.accordion-active:after {
+    content: '\25B2';
+    color: #335484;
+}
+
+.accordion.accordion-active:hover:after {
+    content: '\25B2';
+    color: #ffffff;
+}
+
+.sub-accordion {
+    background-image: linear-gradient(to right, #5980B7 , #ffffff);
+    border-bottom: 2px solid #5980B7;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 18px;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+}
+
+.sub-accordion:hover {
+    background-image: linear-gradient(to right, #ffffff , #5980B7);
+    color: #5980B7;
+}
+
+.sub-accordion:after {
+    content: '\25BC';
+    color: #5980B7;
+    font-size: 18px;
+    float: right;
+    margin-left: 5px;
+}
+
+.sub-accordion:hover:after {
+    content: '\25BC';
+    color: #ffffff;
+}
+
+.sub-accordion.accordion-active:after {
+    content: '\25B2';
+    color: #5980B7;
+}
+
+.sub-accordion.accordion-active:hover:after {
+    content: '\25B2';
+    color: #ffffff;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.sub-panel {
+    padding: 0;
+    background-color: #ffffff;
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}

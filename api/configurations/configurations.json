@@ -1,0 +1,15 @@
+{
+  "aws_mysql": {
+    "host": "mysql-prod.cli2hcydhwtg.us-east-1.rds.amazonaws.com",
+    "database": "myadmin", 
+    "user": "journey",
+    "password": "Schlingel1",
+    "port": 3306
+  },
+  "ses_email": {
+    "region": "us-east-1",
+    "accessKeyId": "AKIAI5IWPQFFB3LSEB3Q",
+    "secretAccessKey": "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"
+  },
+  "jwt_key": "M0d4l17yK3Y+my4dm1N+4u7HoR1z4710nT0k3N"
+}

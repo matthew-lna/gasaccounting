@@ -1,0 +1,35 @@
+{
+  "name": "gasaccounting",
+  "version": "1.0.0",
+  "description": "Client Onboarding Retention and Training Application",
+  "main": "gasaccounting.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -e html,js,css,json,webmanifest gasaccounting.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.341.0",
+    "aws-sdk": "^2.1377.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "handlebars": "^4.7.7",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.3.0",
+    "node-fetch": "^2.6.7",
+    "nodemailer": "^6.9.2",
+    "os": "^0.1.1",
+    "uuid": "^9.0.0"
+  },
+  "nodemonConfig": {
+    "ignore": []
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
+}

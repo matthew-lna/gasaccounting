@@ -1,0 +1,6 @@
+CUSTOM REPORTS LANDING PAGE
+The custom reports landing page shows you the list of your saved queries. Queries are instance and user specific but can be made available to other users based on their user permissions.
+Users can choose to either resubmit, redesign, or check the report history of any custom report.
+Resubmitting a report will run the report again using the existing models, fields, and filters.
+Redesigning a report will allow the user to modify the reports models, fields, and filters.
+Checking the report history will allow users to review and retrieve reports previously generated.

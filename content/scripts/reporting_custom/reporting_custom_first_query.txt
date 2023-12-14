@@ -1,0 +1,14 @@
+CREATING YOUR FIRST QUERY
+Custom reports are created in a two-step process.
+Step 1 requires the user to select the primary model that they will be basing their query on, next the user will be required to select the fields they want visible in the data report they retrieve which includes being able to select related models and any fields from those same related models.
+As a word of caution, the system will strictly compile the query based on your input criteria. If for example you want to review credit report data, it would not be prudent to start by selecting the affordability model as the primary model in the query, albeit that from there you could very well drill down to the credit report. The query would simply be inefficient. 
+With that in mind, we recommend that you first determine the business need or purpose of the report. Next the type of data you would need in the report to satisfy your requirements. This will inform the models you need to interrogate. Lastly decide on whether you would like the query to be restrictive or open, namely what types of filters you would like to apply to the data to ensure that it is relevant to your specific use case.
+Bear in mind that the bigger the query the longer it will take to complete. A structured approach is key to ensuring you get the data that you need.
+Once you have selected your primary model, related models and fields you can click or tap on the proceed button to move to Step 2 of the query generation process.
+Step 2 is where you add your filters. New filters are added using the +Filter button and can be removed using the “ x “ button next to or above the filter block.
+As an aside, users will be able to filter based on any field linked to a model even if they did not select the field for inclusion in their data set. This means you can filter by status for example even if you do not want the status field to form part of your report data set.
+Once you are happy with your filters all that is left to do is click or tap on the build button.
+From here you will be prompted to give your report a name, optionally you can add a description and then once you are happy click on the submit button to retrieve the data.
+It really is as simple as that.
+I am sure that as a user you can see the benefit of being able to generate custom reports tailored to your specific business needs.
+We encourage you to play around with the custom reports feature and to start generating the reports that you and your business need.

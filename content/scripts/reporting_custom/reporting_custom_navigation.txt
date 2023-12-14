@@ -1,0 +1,3 @@
+NAVIGATION
+First, let’s navigate to the custom reports landing page, to do this we log into Mobiloan as normal, click or tap on the Reporting module button, and then at the top of the view we click on the Custom reports radio button.
+The custom reports landing page will now display.

@@ -1,0 +1,77 @@
+.page-training {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.page-header {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* box-shadow: 0 2px 2px 0 #ccc; */
+}
+
+.header-image {
+    content: url("../../images/logos/mobiloan_logo.svg");
+    width: 75px;
+    height: 75px;
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: 4px 4px 2px #aaaaaa;
+}
+
+.page-header-text {
+    font-size: 1.2em;
+    color: #ffffff;
+    text-shadow: 2px 2px #808080;
+}
+
+.page-section {
+    width: 100vw;
+    margin: 32px 32px 0 32px;
+}
+
+.page-general {
+    border-radius: 16px;
+    margin: 0 32px;
+    padding: 32px 32px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.media-items-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.media-title-text {
+    align-self: center;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.media-content {
+    align-self: center;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.media-icons {
+    width: 32px;
+    padding: 8px;
+    height: auto;
+}
+
+.description-container {
+    background-color: #f5f5f5;
+    padding: 16px 8px 16px 8px;
+}
